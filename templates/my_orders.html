@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>📦 Мои заказы</h2>
+
+{% for order in orders %}
+<div class="card p-3 mb-3">
+
+    <h5>
+Заказ № {{ order.id }}
+</h5>
+
+<a href="{% url 'delete_order' order.id %}"
+   class="btn btn-danger btn-sm mt-2"
+   onclick="return confirm('Удалить заказ?')">
+   🗑 Удалить заказ
+</a>
+
+<p>
+Статус:
+{% if order.status == 'processing' %}
+<span class="text-warning">Обрабатывается</span>
+
+{% elif order.status == 'shipped' %}
+<span class="text-primary">Отправлен</span>
+
+{% elif order.status == 'delivered' %}
+<span class="text-success">Доставлен</span>
+
+{% endif %}
+</p>
+    <p>📅 Дата: {{ order.created_at }}</p>
+
+    <hr>
+
+    {% for item in order.items.all %}
+        <p>
+            {{ item.product.name }}
+            —
+            {{ item.quantity }} x {{ item.price }} сум
+        </p>
+    {% endfor %}
+
+</div>
+
+{% empty %}
+<p>У вас пока нет заказов 😢</p>
+{% endfor %}
+
+{% endblock %}

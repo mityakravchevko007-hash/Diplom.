@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">🧾 Оформление заказа</h2>
+
+<div class="card p-4">
+
+    <h5>👤 Пользователь: {{ request.user.username }}</h5>
+
+    <hr>
+
+    {% for item in items %}
+        <div class="mb-2">
+            {{ item.product.name }}
+            —
+            {{ item.quantity }} × {{ item.product.price }} сум
+        </div>
+    {% endfor %}
+
+    <hr>
+
+    <h4>💰 Общая сумма: {{ total }} сум</h4>
+
+    <!-- Форма подтверждения заказа -->
+    <form method="post" action="{% url 'create_order' %}">
+        {% csrf_token %}
+
+        <button type="submit" class="btn btn-success mt-3">
+            ✅ Подтвердить заказ
+        </button>
+    </form>
+
+    <a href="{% url 'cart' %}" class="btn btn-secondary mt-2">
+        ⬅ Вернуться в корзину
+    </a>
+
+</div>
+
+{% endblock %}

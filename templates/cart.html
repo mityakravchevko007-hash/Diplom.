@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">🛒 Ваша корзина</h2>
+
+{% for item in items %}
+<div class="card mb-3 p-3">
+
+    <div class="row align-items-center">
+
+        <!-- Фото -->
+        <div class="col-md-2">
+            {% if item.product.image %}
+                <img src="{{ item.product.image.url }}"
+                     width="100"
+                     style="object-fit: cover;">
+            {% endif %}
+        </div>
+
+        <!-- Информация -->
+        <div class="col-md-4">
+            <h5>{{ item.product.name }}</h5>
+            <p>Цена: {{ item.product.price }} сум</p>
+        </div>
+
+        <!-- Количество -->
+        <div class="col-md-3">
+            <div class="d-flex align-items-center gap-2">
+
+                <!-- ➖ -->
+<a href="{% url 'update_quantity' item.id 'decrease' %}"
+   class="btn btn-secondary btn-sm">
+   -
+</a>
+
+<a href="{% url 'checkout' %}" class="btn btn-success mt-3">
+    Перейти к оформлению
+</a>
+
+<span class="fw-bold">
+    {{ item.quantity }}
+</span>
+
+<!-- ➕ -->
+<a href="{% url 'update_quantity' item.id 'increase' %}"
+   class="btn btn-secondary btn-sm">
+   +
+</a>
+
+            </div>
+        </div>
+
+        <!-- Действия -->
+        <div class="col-md-3 text-end">
+
+            <!-- Удаление -->
+            <a href="{% url 'remove_from_cart' item.id %}"
+               class="btn btn-danger btn-sm">
+                Удалить
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% empty %}
+    <p>Корзина пустая 😢</p>
+{% endfor %}
+
+<!-- Итог -->
+{% if items %}
+<div class="card p-3 mt-4">
+    <h4>💰 Общая сумма: {{ total }} сум</h4>
+
+    <button class="btn btn-success mt-2">
+        ✅ Оформить заказ
+    </button>
+
+</div>
+{% endif %}
+
+{% endblock %}

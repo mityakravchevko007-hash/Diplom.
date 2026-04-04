@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">❤️ Ваше избранное</h2>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+
+{% for item in favorites %}
+
+    <div class="col">
+        <div class="card h-100">
+
+            {% if item.product.image %}
+                <img src="{{ item.product.image.url }}"
+                     class="card-img-top"
+                     style="height:250px; object-fit:cover;">
+            {% endif %}
+
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    {{ item.product.name }}
+                </h5>
+
+                <p class="fw-bold">
+                    {{ item.product.price }} сум
+                </p>
+
+                <!-- Кнопка удалить -->
+                <a href="{% url 'remove_favorite' item.product.id %}"
+                   class="btn btn-danger btn-sm">
+                    Удалить
+                </a>
+
+                <!-- Кнопка добавить в корзину -->
+                <a href="{% url 'add_to_cart' item.product.id %}"
+                   class="btn btn-success btn-sm">
+                    В корзину
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+{% empty %}
+    <p>У вас пока нет избранных товаров.</p>
+{% endfor %}
+
+</div>
+
+{% endblock %}
